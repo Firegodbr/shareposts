@@ -9,7 +9,9 @@ class Pages extends Controller
 
     public function index()
     {
-        // $posts = $this->postModel->getPosts();
+        if (isLogged()) {
+            redirect('posts');
+        }
 
         $data = [
             'title' => 'SharePosts',

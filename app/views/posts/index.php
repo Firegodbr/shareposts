@@ -1,10 +1,11 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<p class="text-center mx-auto"><?php echo flash('post_added'); ?></p>
 <div class="row mb-3">
     <div class="col-md-6">
         <h1>Posts</h1>
     </div>
     <div class="col-md-6">
-        <a href="" class="btn btn-primary pull-right">
+        <a href="<?php echo URLROOT; ?>/posts/add" class="btn btn-primary pull-right">
             <i class="fa fa-pencil" aria-hidden="true"></i> Add post
         </a>
     </div>
