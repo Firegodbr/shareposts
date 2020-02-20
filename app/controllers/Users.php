@@ -70,6 +70,7 @@ class Users extends Controller
 
                 $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
                 if ($this->userModel->register($data)) {
+                    flash('register_success', 'You are now register');
                     redirect('users/login');
                 } else {
                     die('Something went wrong');
@@ -118,9 +119,18 @@ class Users extends Controller
                 $data['password_err'] = 'Please enter a password';
             }
 
+            if ($this->userModel->findUserByEmail($data['email'])) {
+            } else {
+                $data['email_err'] = 'Email not register';
+            }
             if (empty($data['email_err']) && empty($data['password_err'])) {
-                if ($this->userModel->findUserByEmail($data['email'])) {
-                    $data['email_err'] = 'Email already taken';
+                $loggedUser = $this->userModel->login($data['email'], $data['password']);
+                if ($loggedUser) {
+                    $this->createUserSession($loggedUser);
+                    redirect('posts');
+                } else {
+                    $data['password_err'] = 'Password incorrect';
+                    $this->view('users/login', $data);
                 }
             } else {
                 $this->view('users/login', $data);
@@ -136,6 +146,32 @@ class Users extends Controller
             ];
 
             $this->view('users/login', $data);
+        }
+    }
+
+    public function createUserSession($user)
+    {
+        $_SESSION['user_id'] = $user->id;
+        $_SESSION['user_name'] = $user->name;
+        $_SESSION['user_email'] = $user->email;
+        redirect('pages/index');
+    }
+
+    public function logout()
+    {
+        unset($_SESSION['user_id']);
+        unset($_SESSION['user_name']);
+        unset($_SESSION['user_email']);
+        session_destroy();
+        redirect('users/login');
+    }
+
+    public function isLogged()
+    {
+        if (isset($_SESSION['user_id'])) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

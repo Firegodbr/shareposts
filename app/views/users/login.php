@@ -4,6 +4,7 @@
         <div class="card card-body bg-light mt-5">
             <h2>Login</h2>
             <p>Please fill out your credentials</p>
+            <?php echo flash('register_success'); ?>
             <form action="<?php echo URLROOT; ?>/users/login" method="post">
                 <div class="form-group">
                     <label for="email">Email: </label>
