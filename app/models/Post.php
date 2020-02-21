@@ -25,6 +25,28 @@ class Post
         //Execute query
         return $this->db->execute() ? true : false;
     }
+    public function updatePost($data)
+    {
+        $this->db->query('UPDATE posts  SET  title = :title, body = :body WHERE id = :id');
+        //Bind values
+        $this->db->bind(':id', $data['id']);
+        $this->db->bind(':title', $data['title']);
+        $this->db->bind(':body', $data['body']);
+
+
+        //Execute query
+        return $this->db->execute() ? true : false;
+    }
+    public function deletePost($data)
+    {
+        $this->db->query('DELETE FROM posts  WHERE id = :id');
+        //Bind values
+        $this->db->bind(':id', $data['id']);
+
+
+        //Execute query
+        return $this->db->execute() ? true : false;
+    }
     public function getPostById($id)
     {
         $this->db->query('SELECT * FROM posts WHERE id = :id');
