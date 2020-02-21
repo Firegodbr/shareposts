@@ -64,7 +64,10 @@ class Posts extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             # Process Form
             //Sanitanize string
-
+            $post = $this->postModel->getPostById($id);
+            if ($_SESSION['user_id'] != $post->user_id) {
+                redirect('posts');
+            }
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
             $data = [
